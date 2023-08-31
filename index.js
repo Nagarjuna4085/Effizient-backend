@@ -9,6 +9,7 @@ const client = new MongoClient(dbUrl,  {
       deprecationErrors: true,
   }
 })
+await client.connect().then(()=>{console.log("connected")})
 const port = process.env.PORT || 3010;
 const database = client.db("Effizient");
 const lor = database.collection("lor");
@@ -17,27 +18,17 @@ app.use(cors())
 app.use(express.json())
 //get Data
 
-app.get('/hi',(req,res)=>{
+app.get('/hi',async(req,res)=>{
   console.log(req)
-  res.send({name:"nagarjuna"})
-
-})
-app.get('/getFormData', async ({req, res}) => {
-  console.log(req)
-  try {
-    await client.connect()
-    console.log("inserting")
+  console.log("inserting")
     await lor.insertOne({
       title: "Record of a Shriveled Datum",
       content: "No bytes, no problem. Just insert a document, in MongoDB",
     })
     console.log("inserted")
-    return
-  
-  } catch (error) {
-    res.status(404).json({ message: error.message })
 
-  }
+  res.send({name:"nagarjuna"})
+
 
 })
 app.listen(port, '0.0.0.0', () => {
