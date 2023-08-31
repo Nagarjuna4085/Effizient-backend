@@ -1,10 +1,16 @@
 // mongodb+srv://nagarjuna:sanam@cluster0.oynhj.mongodb.net/?retryWrites=true&w=majority
 import express from 'express'
 import cors from 'cors'
-import MongoClientInstance from './conn.js';
-const  MongoDBClient = new MongoClientInstance()
+import { MongoClient,ServerApiVersion } from "mongodb";
+const dbUrl = "mongodb+srv://nagarjuna:sanam123@cluster0.oynhj.mongodb.net/?retryWrites=true&w=majority";
+const client = new MongoClient(dbUrl,  {
+  serverApi: {
+      version: ServerApiVersion.v1,
+      deprecationErrors: true,
+  }
+})
 const port = process.env.PORT || 3010;
-const database = MongoDBClient._client.db("Effizient");
+const database = client.db("Effizient");
 const lor = database.collection("lor");
 const app = express()
 app.use(cors())
@@ -19,7 +25,7 @@ app.get('/hi',(req,res)=>{
 app.get('/getFormData', async ({req, res}) => {
   console.log(req)
   try {
-    await MongoDBClient._client.connect()
+    await client.connect()
     console.log("inserting")
     await lor.insertOne({
       title: "Record of a Shriveled Datum",
