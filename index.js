@@ -1,6 +1,7 @@
 // mongodb+srv://nagarjuna:sanam@cluster0.oynhj.mongodb.net/?retryWrites=true&w=majority
 import express from 'express'
-import { MongoClient } from "mongodb";
+import pkg from 'mongodb';
+const {MongoClient} = pkg;
 console.log(MongoClient)
 import cors from 'cors'
 
