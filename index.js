@@ -17,15 +17,8 @@ const client = new MongoClient(dbUrl,  {
   }
 })
 await client.connect().then(()=>{console.log("connected")})
-const database = client.db("Effizient");
-const lor = database.collection("lor");
-  console.log(req)
-  console.log("inserting")
-    await lor.insertOne({
-      title: "Record of a Shriveled Datum",
-      content: "No bytes, no problem. Just insert a document, in MongoDB",
-    })
-    console.log("inserted")
+
+ 
 
   res.send({name:"nagarjuna"})
 
