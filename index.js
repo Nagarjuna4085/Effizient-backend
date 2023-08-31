@@ -15,18 +15,18 @@ await mongoose.connect(dbUrl, connectionParams)
 sop.watch().
   on('change', data => console.log(data));
 
-app.get('/hi',async({res})=>{
+app.post('/sendformdata',async(req,res)=>{
+  console.log(req.body)
+  const data = req.body.data
    
   // const Person = mongoose.model('lor', new mongoose.Schema({ title: String,content:String }));
-  const Person = new sop({
-    title:"title",content:"content"
-  });
+  const Person = new sop(data);
   
 
 
   await Person.save()
 
-  res.send({name:"nagarjuna"})
+  res.send({name:"nagarjuna",body:req.body})
 
 })
 
