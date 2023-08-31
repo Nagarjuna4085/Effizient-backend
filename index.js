@@ -7,19 +7,21 @@ const app = express()
 app.use(cors())
 app.use(express.json())
 // mongodb+srv://nagarjuna:sanam123@cluster0.oynhj.mongodb.net/?retryWrites=true&w=majority
-const dbUrl = "mongodb+srv://nagarjuna:sanam123@cluster0.oynhj.mongodb.net/Effizient?retryWrites=true&w=majority";
+const dbUrl = "mongodb+srv://nagarjuna:sanam123@cluster0.oynhj.mongodb.net/Effizient1?retryWrites=true&w=majority";
  const connectionParams = {
   useNewUrlParser: true, useUnifiedTopology: true
 };
+await mongoose.connect(dbUrl, connectionParams)
+sop.watch().
+  on('change', data => console.log(data));
 
 app.get('/hi',async({res})=>{
-  await mongoose.connect(dbUrl, connectionParams) 
+   
   // const Person = mongoose.model('lor', new mongoose.Schema({ title: String,content:String }));
   const Person = new sop({
     title:"title",content:"content"
   });
-  sop.watch().
-  on('change', data => console.log(data));
+  
 
 
   await Person.save()
