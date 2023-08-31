@@ -29,7 +29,7 @@ app.get('/getFormData', async (req, res) => {
       content: "No bytes, no problem. Just insert a document, in MongoDB",
     });
     
-    res.status(200).json(data)
+    res.status(200).json("success")
   } catch (error) {
     res.status(404).json({ message: error.message })
 
