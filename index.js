@@ -17,7 +17,6 @@ const client = new MongoClient(dbUrl,  {
   }
 })
 await client.connect().then(()=>{console.log("connected")})
-const port = process.env.PORT || 3010;
 const database = client.db("Effizient");
 const lor = database.collection("lor");
   console.log(req)
@@ -32,6 +31,8 @@ const lor = database.collection("lor");
 
 
 })
+const port = process.env.PORT || 3010;
+
 app.listen(port, '0.0.0.0', () => {
   console.log(`Server running at http://localhost:${port}/`);
 });
