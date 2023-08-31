@@ -1,8 +1,15 @@
 // mongodb+srv://nagarjuna:sanam@cluster0.oynhj.mongodb.net/?retryWrites=true&w=majority
 import express from 'express'
-import cors from 'cors'
 import { MongoClient,ServerApiVersion } from "mongodb";
-const dbUrl = "mongodb+srv://nagarjuna:sanam123@cluster0.oynhj.mongodb.net/?retryWrites=true&w=majority";
+import cors from 'cors'
+
+const app = express()
+app.use(cors())
+app.use(express.json())
+//get Data
+
+app.get('/hi',async(req,res)=>{
+  const dbUrl = "mongodb+srv://nagarjuna:sanam123@cluster0.oynhj.mongodb.net/?retryWrites=true&w=majority";
 const client = new MongoClient(dbUrl,  {
   serverApi: {
       version: ServerApiVersion.v1,
@@ -13,12 +20,6 @@ await client.connect().then(()=>{console.log("connected")})
 const port = process.env.PORT || 3010;
 const database = client.db("Effizient");
 const lor = database.collection("lor");
-const app = express()
-app.use(cors())
-app.use(express.json())
-//get Data
-
-app.get('/hi',async(req,res)=>{
   console.log(req)
   console.log("inserting")
     await lor.insertOne({
