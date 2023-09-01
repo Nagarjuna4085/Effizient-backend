@@ -4,7 +4,13 @@ import * as dotenv from "dotenv";
 import nodemailer from "nodemailer"
 import PDFDocument from 'pdfkit'
 import fs from 'fs'
-const doc = new PDFDocument();
+const doc = new PDFDocument(
+  {
+    layout : 'landscape',
+    size: 'A4'
+}
+
+);
 
 dotenv.config();
 import mongoose from 'mongoose';
@@ -26,13 +32,13 @@ const transporter = nodemailer.createTransport({
   },
   //  sendmail: true 
 });
-async function main(filename) {
+async function main(filename,to,text) {
   // send mail with defined transport object
   let mail = {
     from: "nagarjuna.sanem@gmail.com",
-    to: "snagarjuna2001@gmail.com",
-    subject: "Sending Email using Node.js",
-    text: "That was easy!",
+    to: to,
+    subject: "Statement of Purpose",
+    text: text,
     attachments:[
         {   // binary buffer as an attachment
             filename: filename,
@@ -93,12 +99,77 @@ sop.watch().
         presence_penalty: 0, // Number between -2.0 and 2.0. Positive values penalize new tokens based on whether they appear in the text so far, increasing the model's likelihood to talk about new topics.
       });
     console.log(response.data.choices[0].text)
+    doc.fontSize(18);
+doc.font('Times-Roman').text(`From.`, {
+
+  align: 'left'
+}
+);doc.font('Times-Roman').text(`${object.fullName}`, {
+
+  align: 'left'
+}
+);doc.font('Times-Roman').text(`1-38,Enakandla`, {
+
+  align: 'left'
+}
+);doc.font('Times-Roman').text(`${object.email}`, {
+
+  align: 'left'
+}
+);
+doc.moveDown();
+doc.font('Times-Roman').text(`To`, {
+
+  align: 'left'
+}
+);doc.font('Times-Roman').text(`Visa Officer`, {
+
+  align: 'left'
+}
+);doc.font('Times-Roman').text(`High Commission of Canada`, {
+
+  align: 'left'
+}
+);doc.font('Times-Roman').text(`London, United Kingdom`, {
+
+  align: 'left'
+}
+);
+
+doc.moveDown();
+doc.font('Times-Roman').text(`Subject: Statement of Purpose for studying in Canada`, {
+
+  align: 'left'
+}
+);
+doc.moveDown();
+doc.font('Times-Roman').text(`Dear Sir/Madam,`, {
+
+  align: 'left'
+}
+);
+
+  
+    
     doc
-   
-  .fontSize(27)
-  .text(response.data.choices[0].text, 100, 100);
+  .fontSize(18).font('Times-Roman')
+  .text(response.data.choices[0].text);
+doc.moveDown();
+
+  doc.font('Times-Roman').text(`Sincerely,`, {
+
+    align: 'left'
+  }
+  );
+doc.moveDown();
+doc.font('Times-Roman').text(`${object.fullName}`, {
+
+  align: 'left'
+}
+);
   doc.end();
-  main(filename)
+  var text = `Dear ${object.fullName} Please find the Statement of Purpose template for your student visa application to Canada. kingly edit it as per your scenario and needs.`
+  main(filename,object.email,text)
       
     } catch (error) {
       console.log("error",error)
