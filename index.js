@@ -1,6 +1,11 @@
 // mongodb+srv://nagarjuna:sanam@cluster0.oynhj.mongodb.net/?retryWrites=true&w=majority
 import express from 'express'
 import * as dotenv from "dotenv";
+import nodemailer from "nodemailer"
+import PDFDocument from 'pdfkit'
+import fs from 'fs'
+const doc = new PDFDocument();
+
 dotenv.config();
 import mongoose from 'mongoose';
 import { Configuration, OpenAIApi } from "openai";
@@ -10,6 +15,48 @@ import sop from "./models/sop.js"
 const configration = new Configuration({
   apiKey: process.env.OPENAI_API_KEY,
 });
+const transporter = nodemailer.createTransport({
+  service: "gmail",
+  host: 'smtp.gmail.com',
+  port: 25,
+  auth: {
+      user: 'nagarjuna.sanem@gmail.com',
+      pass: 'oloqdomyfgcrtjoj'
+      
+  },
+  //  sendmail: true 
+});
+async function main(filename) {
+  // send mail with defined transport object
+  let mail = {
+    from: "nagarjuna.sanem@gmail.com",
+    to: "snagarjuna2001@gmail.com",
+    subject: "Sending Email using Node.js",
+    text: "That was easy!",
+    attachments:[
+        {   // binary buffer as an attachment
+            filename: filename,
+            content: fs.createReadStream(filename)
+
+        },
+    ]
+};
+ 
+transporter.sendMail(mail, function (error, info) {
+    if (error) {
+        console.log(error);
+        fs.rmSync(filename, {
+            force: true,
+        });
+    } else {
+        console.log("Email sent successfully: "
+            + info.response);
+            fs.rmSync(filename, {
+                force: true,
+            });
+    }
+});
+}
 const openai = new OpenAIApi(configration);
 
 
@@ -24,8 +71,13 @@ const dbUrl = "mongodb+srv://nagarjuna:sanam123@cluster0.oynhj.mongodb.net/Effiz
 await mongoose.connect(dbUrl, connectionParams)
 sop.watch().
   on('change', async(data) => {
+    // Math.floor(Math.random() * 100000000000)
+    
     const object =data.fullDocument
     console.log(data.fullDocument)
+    var filename = object.fullName+'.pdf'
+    doc.pipe(fs.createWriteStream(filename));
+
     // console.log(data.documentKey._id)
     // var data =sop.findById(data.documentKey._id)
     // console.log(data)
@@ -41,6 +93,12 @@ sop.watch().
         presence_penalty: 0, // Number between -2.0 and 2.0. Positive values penalize new tokens based on whether they appear in the text so far, increasing the model's likelihood to talk about new topics.
       });
     console.log(response.data.choices[0].text)
+    doc
+   
+  .fontSize(27)
+  .text(response.data.choices[0].text, 100, 100);
+  doc.end();
+  main(filename)
       
     } catch (error) {
       console.log("error",error)
