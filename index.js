@@ -6,7 +6,6 @@ import PDFDocument from 'pdfkit'
 import fs from 'fs'
 const doc = new PDFDocument(
   {
-    layout : 'landscape',
     size: 'A4'
 }
 
@@ -169,7 +168,7 @@ doc.font('Times-Roman').text(`${object.fullName}`, {
 );
   doc.end();
   var text = `Dear ${object.fullName} Please find the Statement of Purpose template for your student visa application to Canada. kingly edit it as per your scenario and needs.`
-  main(filename,object.email,text)
+ await  main(filename,object.email,text)
       
     } catch (error) {
       console.log("error",error)
@@ -187,8 +186,6 @@ app.post('/sendformdata',async(req,res)=>{
   // const Person = mongoose.model('lor', new mongoose.Schema({ title: String,content:String }));
   const Person = new sop(data);
   
-
-
   await Person.save()
 
   res.send({name:"nagarjuna",body:req.body})
