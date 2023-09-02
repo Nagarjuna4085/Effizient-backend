@@ -20,8 +20,8 @@ const transporter = nodemailer.createTransport({
   host: 'smtp.gmail.com',
   port: 25,
   auth: {
-    user: 'nagarjuna.sanem@gmail.com',
-    pass: 'oloqdomyfgcrtjoj'
+    user: process.env.USER_NAME,
+    pass: process.env.PASS_WORD
 
   },
   //  sendmail: true 
@@ -63,8 +63,7 @@ const openai = new OpenAIApi(configration);
 const app = express()
 app.use(cors())
 app.use(express.json())
-// mongodb+srv://nagarjuna:sanam123@cluster0.oynhj.mongodb.net/?retryWrites=true&w=majority
-const dbUrl = "mongodb+srv://nagarjuna:sanam123@cluster0.oynhj.mongodb.net/Effizient1?retryWrites=true&w=majority";
+const dbUrl = process.env.MONGODB_URL;
 const connectionParams = {
   useNewUrlParser: true, useUnifiedTopology: true
 };
@@ -201,4 +200,4 @@ app.listen(port, '0.0.0.0', () => {
 
 
 
-// Add functions that make DB calls here
+
