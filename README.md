@@ -1,4 +1,4 @@
-﻿# sop generate and sending content to mail as a pdf
+﻿# sop generate and sending content to mail as a pdf.
 
 ### clone repository
 ### npm i
